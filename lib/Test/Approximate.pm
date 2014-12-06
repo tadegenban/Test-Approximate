@@ -3,7 +3,7 @@ package Test::Approximate;
 use strict;
 use warnings;
 
-our $VERSION = 0.003;
+our $VERSION = 0.005;
 
 use POSIX qw( strtod );
 use Test::Builder;
@@ -151,7 +151,7 @@ __END__
 
 =head1 NAME
 
-    Test::Approximate -- compare two number for approximate equality, deeply
+Test::Approximate -- compare two number for approximate equality, deeply
 
 =head1 SYNOPSIS
 
@@ -169,13 +169,15 @@ __END__
     $expect = [ 1, 2, 3, 4 ];
     cmp_deeply($got, approx($expect, '1%'), 'array');
 
-0    $got = { a => 1, b => 1e-3, c => [ 1.1, 2.5, 5, 1e-9 ] };
+    $got = { a => 1, b => 1e-3, c => [ 1.1, 2.5, 5, 1e-9 ] };
     $expect = { a => 1.0001, b => 1e-03, c => [ 1.1, 2.5, 5, 1.00001e-9 ] };
     cmp_deeply( $got, approx($expect, '0.01%'), 'hash mix array');
 
 =head1 DESCRIPTION
 
-    This module can test two single string or number numberic approximate equal, and deeply test two array or hash or array of hash et. There is already a nice module do this -- L<Test::Approx>. I wrote this one because L<Test::Approx> can't do a deeply test, and I have not found a module do the same thing.
+This module can test two scalar string or number numberic approximate equal, and deeply test two array or hash or array of hash etc.
+
+There is already a nice module do this -- L<Test::Approx>. I wrote this one because L<Test::Approx> can't do a deeply test, and I have not found a module do the same thing.
 
 =head1 FUNCTIONS
 
@@ -196,11 +198,14 @@ To determine which:
 
   $tolerance = '6%'; # threshold = calculated at 6%
   $tolerance = 0.06; # threshold = 0.06
+
 =item approx($aoh, $tolerance)
 
 This function is used to do a deelpy approximate test, with L<Test::Deep>
 
     cmp_deeply($got, approx($expected, '1%'), 'test msg')
+
+=back
 
 =head1 EXPORTS
 
