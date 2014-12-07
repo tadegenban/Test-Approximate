@@ -3,7 +3,7 @@ package Test::Approximate;
 use strict;
 use warnings;
 
-our $VERSION = 0.005;
+our $VERSION = 0.006;
 
 use POSIX qw( strtod );
 use Test::Builder;
@@ -92,7 +92,7 @@ sub approx {
     elsif ( ref $structure eq ref {} ) { # hash
 
         my $hash = {};
-        foreach my $key ( keys $structure ) {
+        foreach my $key ( keys %$structure ) {
             $hash->{$key} = approx($structure->{$key}, $torlerance);
         }
         return $hash;
@@ -101,7 +101,7 @@ sub approx {
 
         my $array = [];
         for my $item ( @$structure ) {
-            push $array, approx($item, $torlerance);
+            push @$array, approx($item, $torlerance);
         }
         return $array;
     }
