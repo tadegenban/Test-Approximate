@@ -12,4 +12,7 @@ $got = { a => 1, b => 1e-3, c => [ 1.1, 2.5, 5, 1e-9 ] };
 $expect = { a => 1.0001, b => 1e-03, c => [ 1.1, 2.5, 5, 1.00001e-9 ] };
 cmp_deeply( $got, approx($expect, '0.01%'), 'hash mix array');
 
+$got = [ 1, 2, 'string'];
+$expect = [ 0.999, 2.001, 'string'];
+cmp_deeply( $got, approx($expect, '1%'), 'array element is str');
 done_testing;

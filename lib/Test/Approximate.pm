@@ -3,7 +3,7 @@ package Test::Approximate;
 use strict;
 use warnings;
 
-our $VERSION = 0.006;
+our $VERSION = 0.007;
 
 use POSIX qw( strtod );
 use Test::Builder;
@@ -19,10 +19,6 @@ sub is_approx {
 
     $tolerance //= $DEFAULT_TOLERANCE;
 
-    # clean input & avoid warnings
-    $got = strtod( defined $got ? $got : '' ); # ignore any errors
-    $expected = strtod( defined $expected ? $expected : '' ); # ignore any errors
-
     # build some diagnostics info
     my $short1 = length($got) > 12 ? substr($got, 0, 8) . '...' : $got;
     my $short2 = length($expected) > 12 ? substr($expected, 0, 8) . '...' : $expected;
@@ -32,8 +28,13 @@ sub is_approx {
     $msg = $msg2 unless defined($msg);
 
     unless ( $Test->ok(_is_approx($got, $expected, $tolerance), $msg) ) {
-        my $diff = $got - $expected;
         $Test->diag("  test: $msg");
+
+        if ( check_type($got) eq 'str' or check_type($expected) eq 'str' ) {
+            $Test->diag(" error: diff between string\n     got: $got\nexpected: $expected");
+            return;
+        }
+        my $diff = $got - $expected;
         if ( $tolerance =~ /^(.+)%$/ ) {
             my $percentage = ( $diff / $expected ) * 100;
             $Test->diag("  error: diff $percentage% is not under tolerance $tolerance");
@@ -52,11 +53,8 @@ sub _is_approx {
     my $num1_type = check_type($num1);
     my $num2_type = check_type($num2);
 
-    if ( $num1_type eq 'str' and $num2_type eq 'str ' ) {
-        return 1;
-    }
-    elsif ( $num1_type eq 'str' or $num2_type eq 'str' ) {
-        return 0;
+    if ( $num1_type eq 'str' or $num2_type eq 'str' ) {
+        return $num1 eq $num2;
     }
     # figure out what to use as the threshold
     my $threshold;

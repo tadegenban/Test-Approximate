@@ -1,1 +1,10 @@
 {{$NEXT}}
+1. str vs str will be true only if two string is equal
+   is_approx('str', 'str', 'str vs str', '1%'); # is true
+   
+   $got = [ 1, 2, 'string'];
+   $expect = [ 0.999, 2.001, 'string'];
+   cmp_deeply( $got, approx($expect, '1%'), 'array element is str');  # is true
+
+2. fix typo
+
