@@ -186,7 +186,7 @@ There is already a nice module do this -- L<Test::Approx>. I wrote this one beca
 Test $got and $expected 's difference.
 
 This function is partly borrowed from L<Test::Approx>, without the string Levenshtein difference.
-Only do a numeric difference;
+Only do a numeric difference; If you compare two string, the test will pass only when the two string is equal.
 
 C<$test_name> defaults to C<'got' =~ 'expected'>
 
@@ -202,6 +202,10 @@ To determine which:
 This function is used to do a deelpy approximate test, with L<Test::Deep>
 
     cmp_deeply($got, approx($expected, '1%'), 'test msg')
+
+This will do a approximate compare every element of an array, and every value of a hash with the given tolerance, If the data is an complicate structure like hash of array , array of hash etc, it will walk all the element , and do a deep compare as you wish.
+
+It is useful when you want do a deep approximate compare with a big data.
 
 =back
 
