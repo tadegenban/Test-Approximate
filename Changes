@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.009     2015-01-01 11:25:05+08:00 Asia/Shanghai
+add Test::Deep to the PreReqs
 0.008     2014-12-30 22:56:48+08:00 Asia/Shanghai
 1. str vs str will be true only if two string is equal
    is_approx('str', 'str', 'str vs str', '1%'); # is true
